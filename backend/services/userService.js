@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { getUsers } from '../dal/userDAL.js';
+import { getUsers, saveUsers } from '../dal/userDAL.js';
 import bcrypt from 'bcrypt';
 export const authenticateUser = (username, password) => __awaiter(void 0, void 0, void 0, function* () {
     const users = yield getUsers();
@@ -16,4 +16,16 @@ export const authenticateUser = (username, password) => __awaiter(void 0, void 0
         return user;
     }
     return null;
+});
+export const createUser = (username, password) => __awaiter(void 0, void 0, void 0, function* () {
+    const users = yield getUsers();
+    const passwordHash = yield bcrypt.hash(password, 10);
+    const newUser = {
+        id: users.length + 1,
+        username,
+        passwordHash,
+    };
+    users.push(newUser);
+    yield saveUsers(users);
+    return newUser;
 });

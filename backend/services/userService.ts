@@ -1,5 +1,5 @@
 import { User } from '../models/User';
-import { getUsers } from '../dal/userDAL.js';
+import { getUsers,saveUsers } from '../dal/userDAL.js';
 import bcrypt from 'bcrypt';
 
 
@@ -10,4 +10,17 @@ export const authenticateUser = async (username: string, password: string): Prom
     return user;
   }
   return null;
+};
+
+export const createUser = async (username: string, password: string): Promise<User> => {
+  const users = await getUsers();
+  const passwordHash = await bcrypt.hash(password, 10);
+  const newUser: User = {
+    id: users.length + 1,
+    username,
+    passwordHash,
+  };
+  users.push(newUser);
+  await saveUsers(users);
+  return newUser;
 };

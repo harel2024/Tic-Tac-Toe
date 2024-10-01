@@ -12,7 +12,7 @@ import jwt from 'jsonwebtoken';
 import dotenv from "dotenv";
 dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET || "default_secret";
-export const login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+export const getAllGames = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { username, password } = req.body;
         const user = yield userService.authenticateUser(username, password);
@@ -36,7 +36,17 @@ export const login = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
         next(error);
     }
 });
-export const register = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+export const startGame = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { username, password } = req.body;
+        const user = yield userService.createUser(username, password);
+        res.json({ id: user.id, username: user.username });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+export const move = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { username, password } = req.body;
         const user = yield userService.createUser(username, password);

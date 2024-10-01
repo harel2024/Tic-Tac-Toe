@@ -12,3 +12,6 @@ const file = './users.json';
 export const getUsers = () => __awaiter(void 0, void 0, void 0, function* () {
     return jsonfile.readFile(file);
 });
+export const saveUsers = (users) => __awaiter(void 0, void 0, void 0, function* () {
+    yield jsonfile.writeFile(file, users, { spaces: 2 });
+});
